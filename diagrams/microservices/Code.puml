@@ -1,0 +1,44 @@
+@startuml
+title Smart Home Lightning Service Code Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+class Home {
+  +String id
+  +String name
+  +List<Room> rooms
+  +void addRoom()
+  +void deleteRoom()
+}
+
+class Room {
+  +String id
+  +String name
+  +List<Light> lights
+  +void addLight()
+  +void deleteLight()
+}
+
+class Light {
+  +String id
+  +String name
+  +void turnOn()
+  +void turnOff()
+}
+
+class Schedule {
+  +String id
+  +List<Light> lightIds
+  +DateTime turnOn
+  +DateTime turnOff
+  +void turnOn()
+  +void turnOff()
+}
+
+Home "1" -- "0..*" Room : has
+Room "1" -- "0..*" Light : has
+Schedule "1" -- "1..*" Light : includes
+
+@enduml

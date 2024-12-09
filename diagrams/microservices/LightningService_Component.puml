@@ -1,0 +1,25 @@
+@startuml
+title Smart Home Lightning Service Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(SmartHomeSystem, "Smart Home System") {
+  Container(LightningService, "Lightning Service", "Java, Spring", "Processes lightning settings")
+  ContainerDb(LightningServiceDB, "Lightning Service Database", "PostgreSQL", "Stores lightning system data")
+}
+
+Container(LightningService, "Lightning Service", "Java, Spring") {
+  Component(LightningController, "LightningController", "Manages lightning settings")
+  Component(ScheduleController, "ScheduleController", "Manages schedules")
+  Component(ServiceLayer, "Service Layer", "Business logic")
+  Component(RepositoryLayer, "Repository Layer", "Data access logic")
+}
+
+Rel(LightningController, ServiceLayer, "Calls business logic")
+Rel(ScheduleController, ServiceLayer, "Calls business logic")
+Rel(ServiceLayer, RepositoryLayer, "Stores data")
+Rel(RepositoryLayer, LightningServiceDB, "Stores lightning system data")
+
+@enduml
