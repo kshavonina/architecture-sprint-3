@@ -1,0 +1,17 @@
+@startuml
+title Smart Home Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "A user of the Smart Home system")
+Person(HeatingSystemSpecialist, "Specialist", "Heating system specialist")
+System(HeatingSensor, "Heating Sensor", "Sensor providing info about home heating")
+System(HeatingSystem, "Heating System", "System managing home heating")
+
+Rel(user, HeatingSystem, "Uses the system")
+Rel(HeatingSystemSpecialist, HeatingSensor, "Installs a sensor in the User's home")
+Rel(HeatingSystem, HeatingSensor, "Requests info about home heating")
+
+@enduml

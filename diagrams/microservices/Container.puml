@@ -1,0 +1,43 @@
+@startuml
+title Smart Home Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "A user of the Smart Home system")
+System_Ext(Device, "Device", "Device providing info about home settings in its area")
+System(SmartHomeSystem, "Smart Home System", "System managing Smart Home devices")
+
+Container_Boundary(SmartHomeSystem, "Smart Home System") {
+  Container(MobileApp, "Mobile Application", "Kotlin, Swift", "Allows users to manage their Smart Home devices")
+  Container(APIGateway, "APIGateway", "Java, Spring", "Handles user and device interactions")
+  Container(HeatingService, "Heating Service", "Java, Spring", "Processes heating settings")
+  ContainerDb(HeatingServiceDB, "Heating Service Database", "PostgreSQL", "Stores heating system data")
+  Container(LightningService, "Lightning Service", "Java, Spring", "Processes lightning settings")
+  ContainerDb(LightningServiceDB, "Lightning Service Database", "PostgreSQL", "Stores lightning system data")
+  Container(MonitoringService, "Monitoring Service", "Java, Spring", "Provides home monitoring")
+  ContainerDb(MonitoringServiceDB, "Monitoring Service Database", "MongoDB", "Stores home monitoring system data")
+  Container(GatesService, "Gates Service", "Java, Spring", "Processes interactions with gates")
+  ContainerDb(GatesServiceDB, "Gates Service Database", "MySQL", "Stores gates system data")
+  ContainerQueue(Kafka, "Kafka", "Apache Kafka", "Queue for asynchronous interactions")
+}
+
+Rel(user, MobileApp, "Uses the system")
+Rel(user, Device, "Installs and sets up a device")
+Rel(Device, APIGateway, "Provides info about home settings in its area")
+Rel(MobileApp, APIGateway, "Processes user requests")
+Rel(APIGateway, HeatingService, "Processes requests related to heating system")
+Rel(HeatingService, HeatingServiceDB, "Stores data")
+Rel(HeatingService, Kafka, "Sends events")
+Rel(APIGateway, LightningService, "Processes requests related to lightning system")
+Rel(LightningService, LightningServiceDB, "Stores data")
+Rel(LightningService, Kafka, "Sends events")
+Rel(APIGateway, MonitoringService, "Processes requests related to home monitoring")
+Rel(MonitoringService, MonitoringServiceDB, "Stores data")
+Rel(MonitoringService, Kafka, "Sends events")
+Rel(APIGateway, GatesService, "Processes requests related to gates interactions")
+Rel(GatesService, GatesServiceDB, "Stores data")
+Rel(GatesService, Kafka, "Sends events")
+
+@enduml
